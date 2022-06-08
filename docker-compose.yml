@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  server:
+    container_name: NODE
+    build: .
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - db
+    links:
+      - db
+    environment:
+      - PORT=5555
+      - MONGO_URI=mongodb://db:27017/local
+      - GOFILE_API=https://api.gofile.io/
+      - GOFILE_TOKEN=YYobes3CIadVdHAvaL68VZzxCMsn5iqL
+      - LINKAPI=https://linkapi-desafio-tech.gateway.linkapi.solutions/v1
+      - LINKAPI_USERNAME=17b271f2-2c76-4240-a0d7-46f57e919ca3
+      - LINKAPI_PASSWORD=741d5db9-c596-41b4-8785-1d50367224c8
+    ports:
+      - 5555:5555
+    command: npm run start
+
+  db:
+    image: 'mongo'
+    container_name: MONGO_DB
+    ports:
+      - '27019:27017'
+    volumes:
+      - ./data/db:/data/db
